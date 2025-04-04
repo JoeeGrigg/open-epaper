@@ -1,13 +1,13 @@
-import React from "react";
-import { FlatList, FlatListProps } from "react-native";
+import React from 'react';
+import { FlatList, FlatListProps } from 'react-native';
 
 export type PaginatedListProps<T> = FlatListProps<T> & {};
 
 export function PaginatedList<T>({
-    data,
-    renderItem,
-    keyExtractor,
-    ...rest
+  data,
+  renderItem,
+  keyExtractor,
+  ...rest
 }: PaginatedListProps<T>) {
   return (
     <FlatList

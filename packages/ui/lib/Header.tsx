@@ -1,54 +1,54 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, LinkProps } from 'expo-router'
+import { Link, LinkProps } from 'expo-router';
 
 export type HeaderProps = {
     title: string,
     icon?: keyof typeof FontAwesome.glyphMap,
     iconLink?: LinkProps['href'],
     iconColor?: string,
-    iconOnPress?: () => {},
+    iconOnPress?: () => void,
     iconLeft?: keyof typeof FontAwesome.glyphMap,
     iconLeftLink?: LinkProps['href'],
     iconLeftColor?: string,
-    iconLeftOnPress?: () => {}
+    iconLeftOnPress?: () => void
 }
 
 export function Header({
-    title,
-    icon,
-    iconLink,
-    iconColor,
-    iconOnPress,
-    iconLeft,
-    iconLeftLink,
-    iconLeftColor,
-    iconLeftOnPress
+  title,
+  icon,
+  iconLink,
+  iconColor,
+  iconOnPress,
+  iconLeft,
+  iconLeftLink,
+  iconLeftColor,
+  iconLeftOnPress
 }: HeaderProps) {
-    return (
-      <View style={styles.header}>
-        {iconLeft ?
-            (iconLeftLink ?
-                <Link href={iconLeftLink} style={styles.iconLeft}>
-                    <FontAwesome name={iconLeft} size={24}/>
-                </Link>
-                : <TouchableOpacity style={styles.iconLeft} onPress={iconLeftOnPress}><FontAwesome name={iconLeft} size={24} color={iconLeftColor}/></TouchableOpacity>
-            )
-            : <View style={styles.iconLeft}></View>
-        }
-        <Text style={styles.title}>{title}</Text>
-        {icon ?
-            (iconLink ?
-                <Link href={iconLink} style={styles.icon}>
-                    <FontAwesome name={icon} size={24}/>
-                </Link>
-                : <TouchableOpacity style={styles.icon} onPress={iconOnPress}><FontAwesome name={icon} size={24} color={iconColor}/></TouchableOpacity>
-            )
-            : <View style={styles.icon}></View>
-        }
-      </View>
-    );
+  return (
+    <View style={styles.header}>
+      {iconLeft ?
+        (iconLeftLink ?
+          <Link href={iconLeftLink} style={styles.iconLeft}>
+            <FontAwesome name={iconLeft} size={24}/>
+          </Link>
+          : <TouchableOpacity style={styles.iconLeft} onPress={iconLeftOnPress}><FontAwesome name={iconLeft} size={24} color={iconLeftColor}/></TouchableOpacity>
+        )
+        : <View style={styles.iconLeft}></View>
+      }
+      <Text style={styles.title}>{title}</Text>
+      {icon ?
+        (iconLink ?
+          <Link href={iconLink} style={styles.icon}>
+            <FontAwesome name={icon} size={24}/>
+          </Link>
+          : <TouchableOpacity style={styles.icon} onPress={iconOnPress}><FontAwesome name={icon} size={24} color={iconColor}/></TouchableOpacity>
+        )
+        : <View style={styles.icon}></View>
+      }
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
