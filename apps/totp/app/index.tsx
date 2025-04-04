@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { Header, PaginatedList } from 'ui';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
@@ -21,7 +21,7 @@ export default function Index() {
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header
         title="Home"
         icon="plus"
@@ -30,10 +30,16 @@ export default function Index() {
         iconLeftLink="/settings"
       />
       <PaginatedList
-        data={items}
-        renderItem={({ item }) => <Text>{item.id}</Text>}
+        items={items}
+        renderItem={(item) => <Text>{item.id}</Text>}
         keyExtractor={(item) => item.id}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});
