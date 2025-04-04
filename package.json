@@ -1,0 +1,10 @@
+{
+  "name": "open-epaper",
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "private": true,
+  "license": "MIT"
+}
