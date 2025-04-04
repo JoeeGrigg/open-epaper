@@ -1,8 +1,18 @@
 import { Text, View } from "react-native";
-import { Header } from "ui";
-import { Link } from "expo-router";
+import { Header, PaginatedList } from "ui";
+import { useState } from "react";
 
 export default function Index() {
+  const [items, setItems] = useState<{ id: string }[]>([
+    { id: "1" },
+    { id: "2" },
+    { id: "3" },
+    { id: "4" },
+    { id: "5" },
+    { id: "6" },
+    { id: "7" },
+  ]);
+
   return (
     <View>
       <Header
@@ -12,7 +22,11 @@ export default function Index() {
         iconLeft="gear"
         iconLeftLink="/settings"
       />
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <PaginatedList
+        data={items}
+        renderItem={({ item }) => <Text>{item.id}</Text>}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 }
