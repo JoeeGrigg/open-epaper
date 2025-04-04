@@ -1,16 +1,16 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Header, PaginatedList } from 'ui';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function Index() {
-  const [items, setItems] = useState<{ id: string }[]>([]);
+  const [items, setItems] = useState<{ id: string, text?: string }[]>([]);
 
   useFocusEffect(
     useCallback(() => {
       setItems([
         { id: '1' },
-        { id: '2' },
+        { id: '2', text: 'Hello This is a long text and I wonder what will hapen when it gets too long to fit on the sreen' },
         { id: '3' },
         { id: '4' },
         { id: '5' },
@@ -31,7 +31,7 @@ export default function Index() {
       />
       <PaginatedList
         items={items}
-        renderItem={(item) => <Text>{item.id}</Text>}
+        textExtractor={(item) => item.text || item.id}
         keyExtractor={(item) => item.id}
       />
     </View>
@@ -41,5 +41,5 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  }
+  },
 });
