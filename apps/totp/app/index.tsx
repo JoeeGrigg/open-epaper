@@ -2,23 +2,23 @@ import { View, StyleSheet } from 'react-native';
 import { Header, PaginatedList } from 'ui';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { TotpItemConfig, getConfig } from '@/lib/storage';
 
 export default function Index() {
-  const [items, setItems] = useState<{ id: string, text?: string }[]>([]);
+  // let [config, setConfig] = useState<StorageConfig>(defaultConfig);
+  let [items, setItems] = useState<TotpItemConfig[]>([]);
 
   useFocusEffect(
     useCallback(() => {
-      setItems([
-        { id: '1' },
-        { id: '2', text: 'Hello This is a long text and I wonder what will hapen when it gets too long to fit on the sreen' },
-        { id: '3' },
-        { id: '4' },
-        { id: '5' },
-        { id: '6' },
-        { id: '7' },
-      ]);
+      const fetchData = async () => {
+        const config = await getConfig();
+        setItems(Object.values(config.totps));
+        // setConfig(config);
+      };
+      fetchData();
     }, [])
   );
+
 
   return (
     <View style={styles.container}>
@@ -31,9 +31,9 @@ export default function Index() {
       />
       <PaginatedList
         items={items}
-        textExtractor={(item) => item.text || item.id}
-        keyExtractor={(item) => item.id}
-        linkExtractor={(item) => `/code/${item.id}`}
+        textExtractor={(item) => item.name}
+        keyExtractor={(item) => item.uuid}
+        linkExtractor={(item) => `/code/${item.uuid}`}
         icon="chevron-right"
       />
     </View>

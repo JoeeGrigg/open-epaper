@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     marginBottom: 10,
+    paddingRight: 1,
     overflow: 'hidden'
   },
   item: {
