@@ -5000,6 +5000,11 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+jssha@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jssha/-/jssha-3.3.1.tgz#c5b7fc7fb9aa745461923b87df0e247dd59c7ea8"
+  integrity sha512-VCMZj12FCFMQYcFLPRm/0lOBbLi8uM2BhXPTqw3U4YAfs4AZfiApOoBLoN8cQE60Z50m1MYMTQVCfgF/KaCVhQ==
+
 keyv@^4.5.4:
   version "4.5.4"
   resolved "https://registry.yarnpkg.com/keyv/-/keyv-4.5.4.tgz#a879a99e29452f942439f2a405e3af8b31d4de93"
@@ -7163,6 +7168,13 @@ toidentifier@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/toidentifier/-/toidentifier-1.0.1.tgz"
   integrity sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==
+
+totp-generator@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/totp-generator/-/totp-generator-1.0.0.tgz#00a3532dbece7a08950a6318c1317bff3b609510"
+  integrity sha512-Iu/1Lk60/MH8FE+5cDWPiGbwKK1hxzSq+KT9oSqhZ1BEczGIKGcN50bP0WMLiIZKRg7t29iWLxw6f81TICQdoA==
+  dependencies:
+    jssha "^3.3.1"
 
 tough-cookie@^4.1.2:
   version "4.1.4"
