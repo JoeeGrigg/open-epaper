@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
+import { Link, LinkProps } from 'expo-router';
 import { Button } from './Button';
 
 const itemHeight = 50;
@@ -8,12 +9,31 @@ export type PaginatedListProps<T> = {
   items: T[],
   textExtractor: (item: T) => string,
   keyExtractor: (item: T) => string,
+  linkExtractor?: (item: T) => LinkProps['href'],
 };
+
+type ItemProps<T> = Pick<PaginatedListProps<T>, 'textExtractor' | 'keyExtractor'> & { item: T };
+
+function Item<T>({ textExtractor, keyExtractor, item }: ItemProps<T>) {
+  return (
+    <View style={styles.item}>
+      <Text
+        style={styles.itemText}
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {textExtractor(item)}
+      </Text>
+      <Text>{keyExtractor(item)}</Text>
+    </View>
+  );
+}
 
 export function PaginatedList<T>({
   items,
   textExtractor,
   keyExtractor,
+  linkExtractor,
 }: PaginatedListProps<T>) {
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(0);
@@ -43,19 +63,14 @@ export function PaginatedList<T>({
         const { height } = event.nativeEvent.layout;
         setListHeight(height);
       }}>
-        {pageItems.map((item, i) => (
-          <TouchableOpacity key={keyExtractor(item)} style={styles.item} onPress={() => {
-            console.log(item);
-          }}>
-            <Text
-              style={styles.itemText}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {textExtractor(item)}
-            </Text>
-            <Text>{i}</Text>
-          </TouchableOpacity>
+        {pageItems.map((item) => (
+          linkExtractor ? (
+            <Link href={linkExtractor(item)} key={keyExtractor(item)}>
+              <Item item={item} textExtractor={textExtractor} keyExtractor={keyExtractor} />
+            </Link>
+          ) : (
+            <Item item={item} textExtractor={textExtractor} keyExtractor={keyExtractor} key={keyExtractor(item)} />
+          )
         ))}
       </View>
       <View style={styles.footer}>

@@ -33,6 +33,7 @@ export default function Index() {
         items={items}
         textExtractor={(item) => item.text || item.id}
         keyExtractor={(item) => item.id}
+        linkExtractor={(item) => `/code/${item.id}`}
       />
     </View>
   );
