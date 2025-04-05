@@ -5,6 +5,7 @@ import { Button } from './Button';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const itemHeight = 50;
+const itemGap = 10;
 
 export type PaginatedListProps<T> = {
   items: T[],
@@ -44,7 +45,7 @@ export function PaginatedList<T>({
   const [pageItems, setPageItems] = useState<T[]>([]);
 
   useEffect(() => {
-    setItemsPerPage(Math.floor(listHeight / itemHeight));
+    setItemsPerPage(Math.floor(listHeight / (itemHeight + itemGap)));
     calculatePageItems();
   }, [listHeight]);
 
@@ -101,10 +102,11 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    justifyContent: 'space-between',
-    marginBottom: 10,
+    justifyContent: 'flex-start',
+    marginBottom: itemGap,
     paddingRight: 1,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    gap: itemGap,
   },
   item: {
     height: itemHeight,
@@ -112,6 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: 20,
     paddingRight: 20,
+    marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
