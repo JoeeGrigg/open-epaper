@@ -34,6 +34,7 @@ export default function Index() {
         textExtractor={(item) => item.text || item.id}
         keyExtractor={(item) => item.id}
         linkExtractor={(item) => `/code/${item.id}`}
+        icon="chevron-right"
       />
     </View>
   );

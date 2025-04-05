@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Link, LinkProps } from 'expo-router';
 import { Button } from './Button';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const itemHeight = 50;
 
@@ -10,11 +11,12 @@ export type PaginatedListProps<T> = {
   textExtractor: (item: T) => string,
   keyExtractor: (item: T) => string,
   linkExtractor?: (item: T) => LinkProps['href'],
+  icon?: keyof typeof FontAwesome.glyphMap,
 };
 
-type ItemProps<T> = Pick<PaginatedListProps<T>, 'textExtractor' | 'keyExtractor'> & { item: T };
+type ItemProps<T> = Pick<PaginatedListProps<T>, 'textExtractor' | 'icon'> & { item: T };
 
-function Item<T>({ textExtractor, keyExtractor, item }: ItemProps<T>) {
+function Item<T>({ textExtractor, item, icon }: ItemProps<T>) {
   return (
     <View style={styles.item}>
       <Text
@@ -24,7 +26,7 @@ function Item<T>({ textExtractor, keyExtractor, item }: ItemProps<T>) {
       >
         {textExtractor(item)}
       </Text>
-      <Text>{keyExtractor(item)}</Text>
+      {icon && <FontAwesome name={icon} size={20} color="black" style={styles.icon} />}
     </View>
   );
 }
@@ -34,6 +36,7 @@ export function PaginatedList<T>({
   textExtractor,
   keyExtractor,
   linkExtractor,
+  icon,
 }: PaginatedListProps<T>) {
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(0);
@@ -66,10 +69,10 @@ export function PaginatedList<T>({
         {pageItems.map((item) => (
           linkExtractor ? (
             <Link href={linkExtractor(item)} key={keyExtractor(item)}>
-              <Item item={item} textExtractor={textExtractor} keyExtractor={keyExtractor} />
+              <Item item={item} textExtractor={textExtractor} icon={icon} />
             </Link>
           ) : (
-            <Item item={item} textExtractor={textExtractor} keyExtractor={keyExtractor} key={keyExtractor(item)} />
+            <Item item={item} textExtractor={textExtractor} icon={icon} key={keyExtractor(item)} />
           )
         ))}
       </View>
@@ -124,5 +127,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  icon: {
+    paddingTop: 5,
   },
 });
