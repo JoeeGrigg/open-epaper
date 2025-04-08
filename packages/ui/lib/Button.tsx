@@ -7,7 +7,8 @@ export type ButtonProps = {
     icon?: keyof typeof FontAwesome.glyphMap,
     iconStyle?: object,
     onPress?: () => void,
-    disabled?: boolean
+    disabled?: boolean,
+    style?: object
 }
 
 export function Button({
@@ -15,13 +16,14 @@ export function Button({
   icon,
   iconStyle,
   onPress,
-  disabled
+  disabled,
+  style
 }: ButtonProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      style={{...styles.button, opacity: disabled ? 0.3 : 1}}
+      style={{...styles.button, ...style, opacity: disabled ? 0.3 : 1}}
     >
       {icon && <FontAwesome name={icon} size={24} style={[styles.buttonIcon, iconStyle]}/>}
       {text && <Text style={styles.buttonText}>{text}</Text>}
@@ -32,15 +34,14 @@ export function Button({
 const styles = StyleSheet.create({
   button: {
     borderWidth: 2,
-    padding: 10,
+    padding: 8,
     borderRadius: 5,
-    marginTop: 'auto',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
   },
   buttonIcon: {

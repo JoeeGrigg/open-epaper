@@ -36,6 +36,7 @@ export default function () {
           text="Save"
           onPress={save}
           disabled={name == '' || secret == ''}
+          style={{ marginTop: 'auto' }}
         />
 
       </View>
