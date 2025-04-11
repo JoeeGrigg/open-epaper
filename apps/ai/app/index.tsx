@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, Text } from 'react-native';
 import { Button, TextInput } from 'ui';
 import 'react-native-get-random-values';
 import Markdown from 'react-native-markdown-display';
@@ -15,6 +15,12 @@ export default function Index() {
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(defaultInputPlaceholder);
   const [thinking, setThinking] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView>(null);
+
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: false });
+    }, 100);
+  };
 
   const handleSend = async () => {
     setInput('');
@@ -34,6 +40,7 @@ export default function Index() {
 
     const newOutput: OutputPart[] = [...output, { text: message, type: 'me' }];
     setOutput(newOutput);
+    scrollToBottom();
 
     try {
       const response = await promptAI(message);
@@ -46,10 +53,7 @@ export default function Index() {
     setInputPlaceholder(defaultInputPlaceholder);
     setThinking(false);
 
-    // Force scroll to bottom after updating output
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: false });
-    }, 100);
+    scrollToBottom();
   };
 
   return (
@@ -61,9 +65,13 @@ export default function Index() {
         bounces={false}
         overScrollMode="never"
       >
-        {output.map((part, index) => (
-          <Markdown key={index}>{part.text}</Markdown>
-        ))}
+        {output.map((part, index) => {
+          if (part.type === 'me') {
+            return <Text key={index} style={{...styles.chatItem, ...styles.me}}>{part.text}</Text>;
+          } else {
+            return <View style={{...styles.chatItem, ...styles.ai}}><Markdown key={index}>{part.text}</Markdown></View>;
+          }
+        })}
       </ScrollView>
       <View style={styles.footer}>
         <TextInput
@@ -86,11 +94,12 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     borderColor: '#000',
     borderWidth: 2,
-    borderRadius: 5,
+    borderRadius: 5
   },
   scrollContent: {
     padding: 10,
     flexGrow: 1,
+    gap: 10,
   },
   footer: {
     padding: 10,
@@ -99,5 +108,20 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 1,
+  },
+  chatItem: {
+    width: '90%',
+  },
+  me: {
+    textAlign: 'right',
+    alignSelf: 'flex-end',
+    borderRightWidth: 2,
+    paddingRight: 10,
+  },
+  ai: {
+    textAlign: 'left',
+    alignSelf: 'flex-start',
+    borderLeftWidth: 2,
+    paddingLeft: 10,
   },
 });
