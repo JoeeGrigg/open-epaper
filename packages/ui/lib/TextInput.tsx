@@ -3,37 +3,46 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 
 export type TextInputProps = {
-    label: string,
+    label?: string,
     value?: string,
     description?: string,
+    placeholder?: string,
     onChangeText?: (text: string) => void,
     containerStyles?: object,
-    hidden?: boolean
+    hidden?: boolean,
+    style?: object,
+    onSubmitEditing?: () => void
 }
 
 function Input ({
   label,
   value,
   description,
+  placeholder,
   onChangeText,
   containerStyles,
-  hidden = false
+  hidden = false,
+  style = {},
+  onSubmitEditing
 }: TextInputProps) {
   let [textVisible, setTextVisible] = useState(!hidden);
 
   return (
     <View style={containerStyles}>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <View style={styles.inputRow}>
         <TextInput
           style={{
             ...styles.input,
+            ...style,
             borderTopRightRadius: hidden ? 0 : 5,
             borderBottomRightRadius: hidden ? 0 : 5
           }}
           value={value}
           onChangeText={onChangeText}
           secureTextEntry={!textVisible}
+          placeholder={placeholder}
+          onSubmitEditing={onSubmitEditing}
         />
         {hidden && (
           <TouchableOpacity onPress={() => setTextVisible(!textVisible)} style={styles.hiddenButton}>
@@ -59,10 +68,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     fontSize: 20,
     borderRadius: 5,
-    flex: 1
+    flex: 1,
+    height: 50
   },
   hiddenButton: {
     padding: 10,
