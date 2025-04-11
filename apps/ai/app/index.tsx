@@ -1,11 +1,12 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 import { Button, TextInput } from 'ui';
 import 'react-native-get-random-values';
 import Markdown from 'react-native-markdown-display';
 import slashCommand from '../lib/slash';
-import promptAI from '../lib/ai';
+import { createAIChat, sendChatMessage } from '../lib/ai';
 import { OutputPart, emptyOutput } from '../lib/output';
+import { Chat } from '@google/genai';
 
 const defaultInputPlaceholder = 'Ask me anything';
 
@@ -14,7 +15,17 @@ export default function Index() {
   const [input, setInput] = useState<string>('');
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(defaultInputPlaceholder);
   const [thinking, setThinking] = useState<boolean>(false);
+  const [chat, setChat] = useState<Chat | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    createChat();
+  }, []);
+
+  const createChat = async () => {
+    const chat = await createAIChat();
+    setChat(chat);
+  };
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -42,9 +53,13 @@ export default function Index() {
     setOutput(newOutput);
     scrollToBottom();
 
+    if (!chat) {
+      return;
+    }
+
     try {
-      const response = await promptAI(message);
-      setOutput([...newOutput, { text: response, type: 'ai' }]);
+      const response = await sendChatMessage(chat, message);
+      setOutput([...newOutput, { text: response || '', type: 'ai' }]);
     } catch (error) {
       console.error(error);
     }
