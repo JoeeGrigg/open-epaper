@@ -7,9 +7,13 @@ import slashCommand from '../lib/slash';
 import promptAI from '../lib/ai';
 import { OutputPart, emptyOutput } from '../lib/output';
 
+const defaultInputPlaceholder = 'Ask me anything';
+
 export default function Index() {
   const [output, setOutput] = useState<OutputPart[]>(emptyOutput);
   const [input, setInput] = useState<string>('');
+  const [inputPlaceholder, setInputPlaceholder] = useState<string>(defaultInputPlaceholder);
+  const [thinking, setThinking] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const handleSend = async () => {
@@ -21,6 +25,13 @@ export default function Index() {
       return;
     }
 
+    setThinking(true);
+    let dots = 1;
+    const thinkingInterval = setInterval(() => {
+      setInputPlaceholder('Thinking' + '.'.repeat(dots));
+      dots = dots === 3 ? 1 : dots + 1;
+    }, 500);
+
     const newOutput: OutputPart[] = [...output, { text: message, type: 'me' }];
     setOutput(newOutput);
 
@@ -30,6 +41,10 @@ export default function Index() {
     } catch (error) {
       console.error(error);
     }
+
+    clearInterval(thinkingInterval);
+    setInputPlaceholder(defaultInputPlaceholder);
+    setThinking(false);
 
     // Force scroll to bottom after updating output
     setTimeout(() => {
@@ -51,7 +66,13 @@ export default function Index() {
         ))}
       </ScrollView>
       <View style={styles.footer}>
-        <TextInput placeholder="Ask me anything" containerStyles={styles.inputContainer} value={input} onChangeText={setInput} onSubmitEditing={handleSend} />
+        <TextInput
+          placeholder={inputPlaceholder}
+          containerStyles={styles.inputContainer}
+          value={input} onChangeText={setInput}
+          onSubmitEditing={handleSend}
+          disabled={thinking}
+        />
         <Button text="Send" onPress={handleSend} />
       </View>
     </View>
