@@ -2,26 +2,35 @@ import { useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'ui';
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
 import Markdown from 'react-native-markdown-display';
-import welcome from '../lib/welcome';
 import slashCommand from '../lib/slash';
+import promptAI from '../lib/ai';
+import { OutputPart, emptyOutput } from '../lib/output';
 
 export default function Index() {
-  const [output, setOutput] = useState<string>(welcome);
+  const [output, setOutput] = useState<OutputPart[]>(emptyOutput);
   const [input, setInput] = useState<string>('');
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     setInput('');
-    
+
     const message = input.trim();
     if (message.startsWith('/')) {
       slashCommand(message, setOutput);
       return;
     }
 
-    setOutput(output + 'Hello ' + uuidv4() + '\n\n');
+    const newOutput: OutputPart[] = [...output, { text: message, type: 'me' }];
+    setOutput(newOutput);
+
+    try {
+      const response = await promptAI(message);
+      setOutput([...newOutput, { text: response, type: 'ai' }]);
+    } catch (error) {
+      console.error(error);
+    }
+
     // Force scroll to bottom after updating output
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({ animated: false });
@@ -37,7 +46,9 @@ export default function Index() {
         bounces={false}
         overScrollMode="never"
       >
-        <Markdown>{output}</Markdown>
+        {output.map((part, index) => (
+          <Markdown key={index}>{part.text}</Markdown>
+        ))}
       </ScrollView>
       <View style={styles.footer}>
         <TextInput placeholder="Ask me anything" containerStyles={styles.inputContainer} value={input} onChangeText={setInput} onSubmitEditing={handleSend} />
