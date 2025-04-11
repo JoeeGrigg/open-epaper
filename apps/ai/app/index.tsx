@@ -69,7 +69,7 @@ export default function Index() {
           if (part.type === 'me') {
             return <Text key={index} style={{...styles.chatItem, ...styles.me}}>{part.text}</Text>;
           } else {
-            return <View style={{...styles.chatItem, ...styles.ai}}><Markdown key={index}>{part.text}</Markdown></View>;
+            return <View key={index} style={{...styles.chatItem, ...styles.ai}}><Markdown>{part.text}</Markdown></View>;
           }
         })}
       </ScrollView>
