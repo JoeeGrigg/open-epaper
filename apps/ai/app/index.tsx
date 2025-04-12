@@ -155,9 +155,7 @@ const styles = StyleSheet.create({
   },
   ai: {
     textAlign: 'left',
-    alignSelf: 'flex-start',
-    borderLeftWidth: 2,
-    paddingLeft: 10,
+    alignSelf: 'flex-start'
   },
   options: {
     position: 'absolute',
