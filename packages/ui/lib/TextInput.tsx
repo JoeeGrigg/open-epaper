@@ -12,7 +12,8 @@ export type TextInputProps = {
     hidden?: boolean,
     style?: object,
     onSubmitEditing?: () => void,
-    disabled?: boolean
+    disabled?: boolean,
+    onFocus?: () => void
 }
 
 function Input ({
@@ -25,7 +26,8 @@ function Input ({
   hidden = false,
   style = {},
   onSubmitEditing,
-  disabled = false
+  disabled = false,
+  onFocus
 }: TextInputProps) {
   let [textVisible, setTextVisible] = useState(!hidden);
 
@@ -46,6 +48,7 @@ function Input ({
           placeholder={placeholder}
           onSubmitEditing={onSubmitEditing}
           editable={!disabled}
+          onFocus={onFocus}
         />
         {hidden && (
           <TouchableOpacity onPress={() => setTextVisible(!textVisible)} style={styles.hiddenButton}>

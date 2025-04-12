@@ -38,10 +38,10 @@ export default function Index() {
     setChat(chat);
   };
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (delay: number = 100) => {
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({ animated: false });
-    }, 100);
+    }, delay);
   };
 
   const handleSend = async () => {
@@ -110,6 +110,7 @@ export default function Index() {
           value={input} onChangeText={setInput}
           onSubmitEditing={handleSend}
           disabled={thinking}
+          onFocus={() => scrollToBottom(150)}
         />
         <Button text="Send" onPress={handleSend} disabled={thinking} />
       </View>
