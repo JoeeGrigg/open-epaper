@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'ui';
 import 'react-native-get-random-values';
 import Markdown from 'react-native-markdown-display';
-import slashCommand from '../lib/slash';
 import { createAIChat, sendChatMessage } from '../lib/ai';
 import { OutputPart, emptyOutput } from '../lib/output';
 import { Chat } from '@google/genai';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { ButtonModal } from 'ui';
+import { router } from 'expo-router';
 
 const defaultInputPlaceholder = 'Ask me anything';
 
@@ -17,6 +18,7 @@ export default function Index() {
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(defaultInputPlaceholder);
   const [thinking, setThinking] = useState<boolean>(false);
   const [chat, setChat] = useState<Chat | null>(null);
+  const [optionsVisible, setOptionsVisible] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
@@ -36,14 +38,9 @@ export default function Index() {
 
   const handleSend = async () => {
     setInput('');
-
     const message = input.trim();
-    if (message.startsWith('/')) {
-      slashCommand(message, setOutput);
-      return;
-    }
-
     setThinking(true);
+
     let dots = 1;
     const thinkingInterval = setInterval(() => {
       setInputPlaceholder('Thinking' + '.'.repeat(dots));
@@ -72,12 +69,19 @@ export default function Index() {
     scrollToBottom();
   };
 
+  const optionButtons = [
+    { text: 'New Chat', onPress: () => {} },
+    { text: 'Clear', onPress: () => setOutput(emptyOutput) },
+    { text: 'Settings', onPress: () => router.push('/settings') },
+  ];
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.outputContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.options}>
+        <TouchableOpacity onPress={() => setOptionsVisible(true)} style={styles.options}>
           <FontAwesome name="ellipsis-v" size={24} color="black" />
         </TouchableOpacity>
+        <ButtonModal buttons={optionButtons} visible={optionsVisible} onRequestClose={() => setOptionsVisible(false)} />
         <ScrollView 
           ref={scrollViewRef}
           style={styles.output} 
@@ -160,5 +164,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     backgroundColor: '#fff',
     zIndex: 1000,
-  },
+  }
 });
