@@ -8,26 +8,16 @@ export async function getAIClient() {
 
 export async function createAIChat() {
   const ai = await getAIClient();
-  return ai.chats.create({ model: 'gemini-2.0-flash' });
+  return ai.chats.create({
+    model: 'gemini-2.0-flash',
+    config: {
+      tools: [{googleSearch: {}}],
+    }
+  });
 }
 
 export async function sendChatMessage(chat: Chat, message: string) {
   const res = await chat.sendMessage({ message });
+  // console.log(res?.candidates[0]?.groundingMetadata?.groundingChunks);
   return res.text;
-}
-
-export default async function promptAI(prompt: string): Promise<string> {
-  try {
-    const apiKey = (await getSettings()).apiKey;
-    const ai = new GoogleGenAI({ apiKey });
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
-      contents: prompt
-    });
-
-    return Promise.resolve(response.text || '');
-  } catch (error) {
-    return Promise.reject(error);
-  }
 }
