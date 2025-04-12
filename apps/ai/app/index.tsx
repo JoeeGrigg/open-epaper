@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'ui';
 import 'react-native-get-random-values';
 import Markdown from 'react-native-markdown-display';
@@ -7,6 +7,7 @@ import slashCommand from '../lib/slash';
 import { createAIChat, sendChatMessage } from '../lib/ai';
 import { OutputPart, emptyOutput } from '../lib/output';
 import { Chat } from '@google/genai';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const defaultInputPlaceholder = 'Ask me anything';
 
@@ -73,21 +74,26 @@ export default function Index() {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView 
-        ref={scrollViewRef}
-        style={styles.output} 
-        contentContainerStyle={styles.scrollContent}
-        bounces={false}
-        overScrollMode="never"
-      >
-        {output.map((part, index) => {
-          if (part.type === 'me') {
-            return <Text key={index} style={{...styles.chatItem, ...styles.me}}>{part.text}</Text>;
-          } else {
-            return <View key={index} style={{...styles.chatItem, ...styles.ai}}><Markdown>{part.text}</Markdown></View>;
-          }
-        })}
-      </ScrollView>
+      <View style={styles.outputContainer}>
+        <TouchableOpacity onPress={() => {}} style={styles.options}>
+          <FontAwesome name="ellipsis-v" size={24} color="black" />
+        </TouchableOpacity>
+        <ScrollView 
+          ref={scrollViewRef}
+          style={styles.output} 
+          contentContainerStyle={styles.scrollContent}
+          bounces={false}
+          overScrollMode="never"
+        >
+          {output.map((part, index) => {
+            if (part.type === 'me') {
+              return <Text key={index} style={{...styles.chatItem, ...styles.me}}>{part.text}</Text>;
+            } else {
+              return <View key={index} style={{...styles.chatItem, ...styles.ai}}><Markdown>{part.text}</Markdown></View>;
+            }
+          })}
+        </ScrollView>
+      </View>
       <View style={styles.footer}>
         <TextInput
           placeholder={inputPlaceholder}
@@ -96,7 +102,7 @@ export default function Index() {
           onSubmitEditing={handleSend}
           disabled={thinking}
         />
-        <Button text="Send" onPress={handleSend} />
+        <Button text="Send" onPress={handleSend} disabled={thinking} />
       </View>
     </View>
   );
@@ -104,12 +110,16 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   output: {
+    flex: 1
+  },
+  outputContainer: {
     flex: 1,
     margin: 10,
     marginBottom: 0,
     borderColor: '#000',
     borderWidth: 2,
-    borderRadius: 5
+    borderRadius: 5,
+    overflow: 'hidden',
   },
   scrollContent: {
     padding: 10,
@@ -138,5 +148,17 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     borderLeftWidth: 2,
     paddingLeft: 10,
+  },
+  options: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    padding: 10,
+    paddingHorizontal: 20,
+    borderBottomLeftRadius: 5,
+    borderLeftWidth: 2,
+    borderBottomWidth: 2,
+    backgroundColor: '#fff',
+    zIndex: 1000,
   },
 });
