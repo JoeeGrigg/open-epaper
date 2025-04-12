@@ -16,12 +16,17 @@ export function ButtonModal({
   onRequestClose,
   buttons
 }: ButtonModalProps) {
+  const runButtonClick = (onPress: () => void) => {
+    onPress();
+    onRequestClose();
+  };
+
   return (
     <Modal visible={visible} onRequestClose={onRequestClose} transparent={true}>
       <View style={styles.optionsModal}>
         <View style={styles.content}>
           {buttons.map((button, index) => (
-            <Button key={index} text={button.text} onPress={button.onPress} style={styles.button}/>
+            <Button key={index} text={button.text} onPress={() => runButtonClick(button.onPress)} style={styles.button}/>
           ))}
         </View>
         <View style={styles.footer}>

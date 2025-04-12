@@ -21,11 +21,19 @@ export default function Index() {
   const [optionsVisible, setOptionsVisible] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
+  const resetOutput = () => {
+    setOutput(emptyOutput);
+    setInput('');
+    setInputPlaceholder(defaultInputPlaceholder);
+    setThinking(false);
+  };
+
   useEffect(() => {
     createChat();
   }, []);
 
   const createChat = async () => {
+    resetOutput();
     const chat = await createAIChat();
     setChat(chat);
   };
@@ -51,10 +59,7 @@ export default function Index() {
     setOutput(newOutput);
     scrollToBottom();
 
-    if (!chat) {
-      return;
-    }
-
+    if (!chat) return;
     try {
       const response = await sendChatMessage(chat, message);
       setOutput([...newOutput, { text: response || '', type: 'ai' }]);
@@ -70,8 +75,8 @@ export default function Index() {
   };
 
   const optionButtons = [
-    { text: 'New Chat', onPress: () => {} },
-    { text: 'Clear', onPress: () => setOutput(emptyOutput) },
+    { text: 'New Chat', onPress: () => createChat() },
+    { text: 'Clear', onPress: () => resetOutput() },
     { text: 'Settings', onPress: () => router.push('/settings') },
   ];
 
