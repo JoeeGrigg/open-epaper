@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     alignSelf: 'flex-end',
     borderRightWidth: 2,
+    borderRightColor: '#c0c0c0',
     paddingRight: 10,
   },
   ai: {
