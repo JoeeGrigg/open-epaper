@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ai",
-    "slug": "ai",
+    "name": "AI Chat",
+    "slug": "ai-chat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,7 +12,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.open_epaper.ai_chat"
     },
     "plugins": [
       "expo-router",
@@ -28,6 +29,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f0fe7e2b-9648-4dbc-b076-84428d5eef33"
+      }
     }
   }
 }
