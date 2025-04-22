@@ -7682,6 +7682,16 @@ react-native-screens@~4.4.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-swipe-gesture-handler@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-swipe-gesture-handler/-/react-native-swipe-gesture-handler-1.0.6.tgz#9fc1785e95ebe68571fc3e21ae1966dd549c82d0"
+  integrity sha512-wlbeZkD8F/WENgUJSoLtPZIa0pxLvWb65GzgzSBB9LDdc0PtrGo/77/ATRbhUl82GiJK7UQ6jZDZxxeKIsejPg==
+
+react-native-swipe-gestures@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz#a172cb0f3e7478ccd681fd36b8bfbcdd098bde7c"
+  integrity sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw==
+
 react-native-web@~0.19.13:
   version "0.19.13"
   resolved "https://registry.npmjs.org/react-native-web/-/react-native-web-0.19.13.tgz"
