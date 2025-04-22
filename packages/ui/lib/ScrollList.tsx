@@ -67,7 +67,7 @@ export function ScrollList<T>({
         );
       })}
       <GestureRecognizer
-        style={[styles.containerCover, { gap }]}
+        style={styles.containerCover}
         onLayout={calculatePages}
         onSwipeUp={() => {
           setPageIndex((pageIndex) => {
@@ -82,13 +82,30 @@ export function ScrollList<T>({
           });
         }}
       >
-        {pagesCalculated && pages.current[pageIndex]?.map((itemIndex) => {
-          return (
-            <View key={itemIndex}>
-              {renderItem?.(items[itemIndex])}
-            </View>
-          );
-        })}
+        <View style={[styles.contentContainer, { gap }]}>
+          {pagesCalculated && pages.current[pageIndex]?.map((itemIndex) => {
+            return (
+              <View key={itemIndex}>
+                {renderItem?.(items[itemIndex])}
+              </View>
+            );
+          })}
+        </View>
+        <View style={styles.pageIndicator}>
+          {pagesCalculated && pages.current.map((_, index) => {
+            return (
+              <View
+                key={index}
+                style={[
+                  styles.pageIndicatorItem,
+                  {
+                    backgroundColor: pageIndex === index ? '#000' : '#fff',
+                  }
+                ]}
+              />
+            );
+          })}
+        </View>
       </GestureRecognizer>
     </View>
   );
@@ -115,5 +132,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     opacity: 1,
     justifyContent: 'center',
+    flexDirection: 'row',
   },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingLeft: 10,
+  },
+  pageIndicator: {
+    gap: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pageIndicatorItem: {
+    backgroundColor: '#fff',
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 10,
+    borderWidth: 2,
+    borderColor: '#000',
+  }
 });

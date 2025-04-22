@@ -1,8 +1,6 @@
 import { Text, View } from 'react-native';
 import { ScrollList } from 'ui';
-
-const items = Array.from({ length: 10 }, (_, i) => ({ id: i.toString(), height: Math.floor(Math.random() * 101) + 50 }));
-
+import { useState } from 'react';
 const renderItem = (item: { id: string, height: number }) => {
   return (
     <View style={{
@@ -15,6 +13,8 @@ const renderItem = (item: { id: string, height: number }) => {
 };
 
 export default function IndexView() {
+  const [items, setItems] = useState(Array.from({ length: 50 }, (_, i) => ({ id: i.toString(), height: Math.floor(Math.random() * 101) + 50 })));
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollList
