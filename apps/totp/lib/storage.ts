@@ -88,3 +88,9 @@ export async function deleteTotp(uuid: TotpItemConfig['uuid']): Promise<void> {
   delete config.totps[uuid];
   await setConfig(config);
 }
+
+export async function clearTotps(): Promise<void> {
+  let config = await getConfig();
+  config.totps = {};
+  await setConfig(config);
+}

@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text, ScrollView, Alert } from 'react-native';
 import { Header, Button } from 'ui';
 import * as FileSystem from 'expo-file-system';
-import { getConfig } from '@/lib/storage';
+import { getConfig, clearTotps } from '@/lib/storage';
 import * as Sharing from 'expo-sharing';
 
 export default function () {
@@ -43,6 +43,20 @@ export default function () {
     }
   };
 
+  const handleClear = async () => {
+    Alert.alert(
+      'Confirm Data Clear',
+      'Are you sure you want to delete all data from this application? Once deleted it will be unrecoverable...',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Clear', onPress: async () => {
+          await clearTotps();
+          Alert.alert('Success', 'All data has been cleared');
+        } }
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Header title="Settings" iconLeft="chevron-left" iconLeftLink="/" />
@@ -68,7 +82,7 @@ export default function () {
         <View style={styles.section}>
           <Text style={styles.heading}>Clear Data</Text>
           <Text style={styles.text}>Clear all data from the app.</Text>
-          <Button text="Clear Data" onPress={() => {}} />
+          <Button text="Clear Data" onPress={handleClear} />
         </View>
       </ScrollView>
     </View>
