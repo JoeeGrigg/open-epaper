@@ -35,7 +35,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <Header
-        title="Home"
+        title="TOTP"
         icon="plus"
         iconLink="/new"
         iconLeft="gear"
