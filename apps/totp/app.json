@@ -12,7 +12,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.open_epaper.totp"
     },
     "plugins": [
       "expo-router",
