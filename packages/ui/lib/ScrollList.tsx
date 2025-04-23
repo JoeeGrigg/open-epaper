@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 export type ScrollListProps<T> = {
@@ -13,7 +13,7 @@ export function ScrollList<T>({
   items,
   renderItem,
   keyExtractor,
-  gap = 0,
+  gap = 10,
 }: ScrollListProps<T>) {
   let containerHeight = useRef(0);
   let itemHeights = useRef<[number, number][]>([]);
@@ -43,7 +43,6 @@ export function ScrollList<T>({
 
     pages.current.push(Object.assign([], currentPage));
     setPagesCalculated(true);
-    console.log(pages.current);
   };
 
   return (
@@ -94,7 +93,7 @@ export function ScrollList<T>({
         <View style={styles.pageIndicator}>
           {pagesCalculated && pages.current.map((_, index) => {
             return (
-              <View
+              <TouchableOpacity
                 key={index}
                 style={[
                   styles.pageIndicatorItem,
@@ -102,6 +101,9 @@ export function ScrollList<T>({
                     backgroundColor: pageIndex === index ? '#000' : '#fff',
                   }
                 ]}
+                onPress={() => {
+                  setPageIndex(index);
+                }}
               />
             );
           })}
@@ -146,8 +148,8 @@ const styles = StyleSheet.create({
   },
   pageIndicatorItem: {
     backgroundColor: '#fff',
-    width: 10,
-    height: 10,
+    width: 8,
+    height: 8,
     borderRadius: 5,
     marginHorizontal: 10,
     borderWidth: 2,
