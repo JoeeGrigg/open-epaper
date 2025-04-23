@@ -1,8 +1,9 @@
 import { View, StyleSheet, Text, ScrollView, Alert } from 'react-native';
 import { Header, Button } from 'ui';
 import * as FileSystem from 'expo-file-system';
-import { getConfig, clearTotps } from '@/lib/storage';
+import { getConfig, clearTotps, setConfig } from '@/lib/storage';
 import * as Sharing from 'expo-sharing';
+import * as DocumentPicker from 'expo-document-picker';
 
 export default function () {
   const handleBackup = async () => {
@@ -43,6 +44,55 @@ export default function () {
     }
   };
 
+  const handleImport = async () => {
+    try {
+      // Use document picker to select a JSON file
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/json',
+        copyToCacheDirectory: true,
+      });
+      
+      if (result.canceled) {
+        return;
+      }
+      
+      // Read the file content
+      const fileContent = await FileSystem.readAsStringAsync(result.assets[0].uri);
+      
+      try {
+        // Parse the JSON content
+        const importedConfig = JSON.parse(fileContent);
+        
+        // Validate the imported data structure
+        if (!importedConfig.totps) {
+          throw new Error('Invalid backup file format');
+        }
+        
+        // Confirm with the user before importing
+        Alert.alert(
+          'Confirm Import',
+          'This will replace your current data. Continue?',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { 
+              text: 'Import', 
+              onPress: async () => {
+                // Save the imported config
+                await setConfig(importedConfig);
+                Alert.alert('Success', 'Data imported successfully');
+              } 
+            }
+          ]
+        );
+      } catch {
+        Alert.alert('Error', 'Invalid backup file format');
+      }
+    } catch (error) {
+      console.error('Import error:', error);
+      Alert.alert('Error', 'Failed to import backup');
+    }
+  };
+
   const handleClear = async () => {
     Alert.alert(
       'Confirm Data Clear',
@@ -76,7 +126,7 @@ export default function () {
         <View style={styles.section}>
           <Text style={styles.heading}>Import</Text>
           <Text style={styles.text}>Import data from the file system of your device.</Text>
-          <Button text="Import" onPress={() => {}} />
+          <Button text="Import" onPress={handleImport} />
         </View>
         <View style={styles.divider} />
         <View style={styles.section}>
