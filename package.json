@@ -6,6 +6,9 @@
     "apps/*",
     "packages/*"
   ],
+  "scripts": {
+    "create-app": "./bin/create-app.sh"
+  },
   "private": true,
   "license": "MIT",
   "devDependencies": {
