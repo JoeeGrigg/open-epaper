@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Header, Button, TextInput } from 'ui';
+import { Header, Button, TextInput, DateTimeInput } from 'ui';
 import { router } from 'expo-router';
 
 export default function Add() {
@@ -32,6 +32,11 @@ export default function Add() {
           value={description}
           onChangeText={setDescription}
           multiline={true}
+        />
+        <DateTimeInput
+          label="Due"
+          value={dueDate}
+          onChange={setDueDate}
         />
         <Button
           //style={styles.saveButton}

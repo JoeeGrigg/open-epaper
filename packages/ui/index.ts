@@ -4,3 +4,5 @@ export * from './lib/Button';
 export * from './lib/TextInput';
 export * from './lib/ButtonModal';
 export * from './lib/ScrollList';
+export * from './lib/DateTimeInput';
+export * from './lib/InputWrapper';
