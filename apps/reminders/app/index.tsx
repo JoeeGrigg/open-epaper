@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View } from 'react-native';
 import { ButtonModal, Header } from 'ui';
+import { router } from 'expo-router';
 
 export default function Index() {
   const [list, setList] = useState<string | null>(null);
@@ -20,6 +21,7 @@ export default function Index() {
       <Header
         title={list || 'Reminders'}
         icon="plus"
+        iconOnPress={() => router.push('/add')}
         iconLeft="bars"
         iconLeftOnPress={() => setListsVisible(true)}
       />

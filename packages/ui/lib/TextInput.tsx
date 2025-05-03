@@ -13,7 +13,8 @@ export type TextInputProps = {
     style?: object,
     onSubmitEditing?: () => void,
     disabled?: boolean,
-    onFocus?: () => void
+    onFocus?: () => void,
+    multiline?: boolean
 }
 
 function Input ({
@@ -27,7 +28,8 @@ function Input ({
   style = {},
   onSubmitEditing,
   disabled = false,
-  onFocus
+  onFocus,
+  multiline = false
 }: TextInputProps) {
   let [textVisible, setTextVisible] = useState(!hidden);
 
@@ -39,6 +41,7 @@ function Input ({
           style={{
             ...styles.input,
             ...style,
+            ...(multiline && styles.multilineInput),
             borderTopRightRadius: hidden ? 0 : 5,
             borderBottomRightRadius: hidden ? 0 : 5
           }}
@@ -49,6 +52,7 @@ function Input ({
           onSubmitEditing={onSubmitEditing}
           editable={!disabled}
           onFocus={onFocus}
+          multiline={multiline}
         />
         {hidden && (
           <TouchableOpacity onPress={() => setTextVisible(!textVisible)} style={styles.hiddenButton}>
@@ -79,6 +83,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flex: 1,
     height: 50
+  },
+  multilineInput: {
+    minHeight: 100,
+    textAlignVertical: 'top'
   },
   hiddenButton: {
     padding: 10,
