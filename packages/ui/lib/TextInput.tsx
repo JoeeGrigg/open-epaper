@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
-
-export type TextInputProps = {
-    label?: string,
+import { InputWrapperProps, InputWrapper } from './InputWrapper';
+import { styles as styleUtils } from '../utils/styles';
+export type TextInputProps = Omit<InputWrapperProps, 'children'> & {
     value?: string,
-    description?: string,
     placeholder?: string,
     onChangeText?: (text: string) => void,
-    containerStyles?: object,
     hidden?: boolean,
     style?: object,
     onSubmitEditing?: () => void,
@@ -34,8 +32,7 @@ function Input ({
   let [textVisible, setTextVisible] = useState(!hidden);
 
   return (
-    <View style={containerStyles}>
-      {label && <Text style={styles.label}>{label}</Text>}
+    <InputWrapper label={label} description={description} containerStyles={containerStyles}>
       <View style={styles.inputRow}>
         <TextInput
           style={{
@@ -60,29 +57,19 @@ function Input ({
           </TouchableOpacity>
         )}
       </View>
-      {description && (
-        <Text style={styles.description}>{description}</Text>
-      )}
-    </View>
+    </InputWrapper>
   );
 }
 export { Input as TextInput };
 
 const styles = StyleSheet.create({
-  label: {
-    fontSize: 15,
-    marginBottom: 5
-  },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   input: {
-    borderWidth: 2,
-    fontSize: 20,
-    borderRadius: 5,
-    flex: 1,
-    height: 50
+    ...styleUtils.input,
+    flex: 1
   },
   multilineInput: {
     minHeight: 100,
@@ -96,8 +83,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5
-  },
-  description: {
-    marginTop: 5
   }
 });

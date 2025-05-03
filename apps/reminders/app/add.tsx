@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Header, Button, TextInput, DateTimeInput } from 'ui';
+import { Header, Button, TextInput, DateTimeInput, FlexSeperator } from 'ui';
 import { router } from 'expo-router';
 
 export default function Add() {
@@ -23,12 +23,12 @@ export default function Add() {
       />
       <View style={styles.form}>
         <TextInput
-          placeholder="Title"
+          label="Title"
           value={title}
           onChangeText={setTitle}
         />
         <TextInput
-          placeholder="Description"
+          label="Description"
           value={description}
           onChangeText={setDescription}
           multiline={true}
@@ -38,6 +38,7 @@ export default function Add() {
           value={dueDate}
           onChange={setDueDate}
         />
+        <FlexSeperator />
         <Button
           //style={styles.saveButton}
           onPress={handleSave}

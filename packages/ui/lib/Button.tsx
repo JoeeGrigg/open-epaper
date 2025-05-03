@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-
+import { styles as styleUtils } from '../utils/styles';
 export type ButtonProps = {
     text?: string,
     icon?: keyof typeof FontAwesome.glyphMap,
@@ -33,9 +33,7 @@ export function Button({
 
 const styles = StyleSheet.create({
   button: {
-    borderWidth: 2,
-    padding: 8,
-    borderRadius: 5,
+    ...styleUtils.input,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'

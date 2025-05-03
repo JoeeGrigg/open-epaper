@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     borderRadius: 5,
     padding: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    height: 50
   }
 });
